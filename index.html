@@ -1,0 +1,279 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Conversion API
+    </title>
+
+    <style>
+    body, html, .box, #select {
+      font-size: 20px;
+      font-family: 'Avenir', sans-serif;
+     }
+     body {
+       background-color: #9FC131;
+
+     }
+    .box {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      width: 50%;
+      text-align: center;
+      border-radius: 10px;
+      border:1px solid #cccccc;
+
+     }
+
+     #column {
+     float: left;
+     width: 50%	;
+     padding-top: 10px;
+     }
+     * {
+     box-sizing: border-box;
+     }
+     .row:after {
+     content: "";
+     display: table;
+     clear: both;
+     }
+     .button {
+       border: none;
+       background-color: #c13158;
+       border-radius: 30px;
+       color: white;
+       font-size: 20px;
+       padding: 20px;
+       padding-left: 50px;
+       padding-right: 50px;
+     }
+     select {
+       min-width: 200px;
+       margin: 20px;
+    }
+    .inner-container {
+      background-color: white;
+      margin: 70px;
+      margin-top: 40px;
+      padding-top: 10px;
+      border-radius: 30px;
+    }
+    .inner-inner-container {
+      font-size: 16px;
+      margin: 30px;
+      padding-bottom: 20px;
+    }
+    .container {
+      width: 100%;
+      padding-top: 40px;
+      padding-bottom: none;
+      font-weight: 350;
+      font-size: 35px;
+    }
+
+    </style>
+
+  </head>
+    <script>
+
+    function convert() {
+
+    amount = document.getElementById("box_1").value;
+    fromCurr = document.getElementById("select1").value;
+    toCurr = document.getElementById("select2").value;
+    // alert(amount);
+    // alert(fromCurr);
+    // alert(toCurr);
+    //yay!
+
+    request = new XMLHttpRequest(); // create a new XML http request (even for JSON)
+
+    apiKey = 'bad44716d26ad7615e1d';
+    fromCurr = encodeURIComponent(fromCurr); // not sure if necessary
+    toCurr = encodeURIComponent(toCurr);
+    var query = fromCurr + "_" + toCurr;
+
+    url = 'https://free.currconv.com/api/v7/convert?q=' + query +
+      '&compact=ultra&apiKey=' + apiKey;
+
+    request.open("GET", url, true);
+
+    request.onreadystatechange = function() {
+      if (request.readyState == 4 && request.status == 200) {
+        data = request.responseText;
+        value = JSON.parse(data);
+
+        //all these values need value.key
+        if(value[query]) {
+          total = value[query] * amount; // this is the converted value
+          total = total.toFixed(2); // round to 2 decimals
+          document.getElementById("box_2").value = total;
+        }
+      }
+    }
+    request.send();
+  }
+
+    </script>
+
+
+    <body>
+    <center>
+    <div class="container">
+      Currency Converter API
+      <div class="inner-container" style="padding: 15px;">
+        <div class="row" style="padding-top: 10px;"> <!-- big div -->
+          <div class="box1" id="column"> <!-- 1st price and drop-down -->
+            <input type="text" id="box_1" class="box" placeholder="Enter a number">
+              <form>
+                <select id="select1" style="width: 20%; font-size: 12px;">
+                  <option value="USD"> United States Dollar </option>
+                  <option value="CAD"> Canadian Dollar </option>
+                  <option value="HKD"> Hong Kong Dollar </option>
+                  <option value="AUD"> Australian Dollar </option>
+                  <option value="XCD"> East Caribbean Dollar </option>
+                  <option value="BBD"> Barbadian Dollar </option>
+                  <option value="BND"> Brunei Dollar </option>
+                  <option value="JMD"> Jamaican Dollar </option>
+                  <option value="NZD"> New Zealand Dollar </option>
+                  <option value="DKK"> Danish Krone </option>
+                  <option value="ISK"> Icelandic Króna </option>
+                  <option value="SEK"> Swedish Krona </option>
+                  <option value="CZK"> Czech Koruna </option>
+                  <option value="XAF"> Central African CFA Franc </option>
+                  <option value="XOF"> West African CFA Franc </option>
+                  <option value="RWF"> Rwandan Franc </option>
+                  <option value="HUF"> Hungarian Forint </option>
+                  <option value="RON"> Romanian Leu </option>
+                  <option value="PHP"> Philippine Peso </option>
+                  <option value="IDR"> Indonesian Rupiah </option>
+                  <option value="INR"> Indian Rupee </option>
+                  <option value="ALL"> Albanian Lek </option>
+                  <option value="EUR"> Euro </option>
+                  <option value="BTN"> Bhutanese Ngultrum </option>
+                  <option value="CUP"> Cuban Peso </option>
+                  <option value="FKP"> Falkland Islands Pound </option>
+                  <option value="GIP"> Gibraltar Pound </option>
+                  <option value="IRR"> Iranian Rial </option>
+                  <option value="LAK"> Lao Kip </option>
+                  <option value="LYD"> Libyan Dinar </option>
+                  <option value="MKD"> Macedonian Denar </option>
+                  <option value="OMR"> Omani Rial</option>
+                  <option value="PGK"> Papua New Guinean Kina </option>
+                  <option value="WST"> Samoan Tala </option>
+                  <option value="ANG"> Netherlands Antillean Gulden </option>
+                  <option value="MXN"> Mexican Peso </option>
+                  <option value="NOK"> Norwegian Krone </option>
+                  <option value="PLN"> Polish Zloty </option>
+                  <option value="UGX"> Ugandan Shilling </option>
+                  <option value="UAH"> Ukrainian Hryvnia </option>
+                  <option value="SHP"> Saint Helena Pound </option>
+                  <option value="CDF"> Congolese Franc </option>
+
+                </select>
+              </form>
+            </input>
+          </div>
+          <div class="box2" id="column" style="padding-bottom: 30px;">
+            <input type="text" id="box_2" class="box">
+              <form>
+                <select id="select2" style="width: 20%; font-size: 12px;">
+                  <option value="USD"> United States Dollar </option>
+                  <option value="CAD"> Canadian Dollar </option>
+                  <option value="HKD"> Hong Kong Dollar </option>
+                  <option value="AUD"> Australian Dollar </option>
+                  <option value="XCD"> East Caribbean Dollar </option>
+                  <option value="BBD"> Barbadian Dollar </option>
+                  <option value="BND"> Brunei Dollar </option>
+                  <option value="JMD"> Jamaican Dollar </option>
+                  <option value="NZD"> New Zealand Dollar </option>
+                  <option value="DKK"> Danish Krone </option>
+                  <option value="ISK"> Icelandic Króna </option>
+                  <option value="SEK"> Swedish Krona </option>
+                  <option value="CZK"> Czech Koruna </option>
+                  <option value="XAF"> Central African CFA Franc </option>
+                  <option value="XOF"> West African CFA Franc </option>
+                  <option value="RWF"> Rwandan Franc </option>
+                  <option value="HUF"> Hungarian Forint </option>
+                  <option value="RON"> Romanian Leu </option>
+                  <option value="PHP"> Philippine Peso </option>
+                  <option value="IDR"> Indonesian Rupiah </option>
+                  <option value="INR"> Indian Rupee </option>
+                  <option value="ALL"> Albanian Lek </option>
+                  <option value="EUR"> Euro </option>
+                  <option value="BTN"> Bhutanese Ngultrum </option>
+                  <option value="CUP"> Cuban Peso </option>
+                  <option value="FKP"> Falkland Islands Pound </option>
+                  <option value="GIP"> Gibraltar Pound </option>
+                  <option value="IRR"> Iranian Rial </option>
+                  <option value="LAK"> Lao Kip </option>
+                  <option value="LYD"> Libyan Dinar </option>
+                  <option value="MKD"> Macedonian Denar </option>
+                  <option value="OMR"> Omani Rial</option>
+                  <option value="PGK"> Papua New Guinean Kina </option>
+                  <option value="WST"> Samoan Tala </option>
+                  <option value="ANG"> Netherlands Antillean Gulden </option>
+                  <option value="MXN"> Mexican Peso </option>
+                  <option value="NOK"> Norwegian Krone </option>
+                  <option value="PLN"> Polish Zloty </option>
+                  <option value="UGX"> Ugandan Shilling </option>
+                  <option value="UAH"> Ukrainian Hryvnia </option>
+                  <option value="SHP"> Saint Helena Pound </option>
+                  <option value="CDF"> Congolese Franc </option>
+                </select>
+              </form>
+            </input>
+          </div>
+           <input class="button" type="button" value = "Convert"
+            onclick="return convert()">
+          </input> <br><br>
+          </div>
+        </div>
+      </div>
+      <div class="inner-container">
+        Which API?
+        <div class="inner-inner-container">
+        I chose a currency converter for my API.
+         You can enter a value and calculate how much it translates to in an other currency.
+         My code works for about 40 currencies (I didn't want to go overboard).
+       </div>
+      </div>
+      <div class="inner-container">
+        Website
+        <div class="inner-inner-container">
+        website: https://www.currencyconverterapi.com
+       </div>
+      </div>
+
+      <div class="inner-container">
+        Options?
+        <div class="inner-inner-container">
+          As for options, each calculation takes two user-entered currencies and
+          enters them as parameters in a hyperlink for an API call.
+
+          That API call returns a JSON file/text with the given conversion rate
+          between just those two currencies.
+          <br><br>
+          The code then multiplies the conversion rate by the number that the user enters,
+          giving the final answer.
+
+       </div>
+      </div>
+
+      <div class="inner-container">
+        Applications?
+        <div class="inner-inner-container">
+        This API is very useful for travelers who need to know how much money
+        they will need in a given country. It gives them a quick conversion
+        between their native currency and another country's.
+        <br><br>
+        This API could also be useful for economists trying to understand a nation's
+        economic health. The price of one currency versus another can indicate
+        the strength of a nation's economy, as well as potential trade deals.
+       </div>
+      </div>
+
+    </center>
+  </body>
+</html>
